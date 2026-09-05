@@ -1,4 +1,4 @@
-package com.example.ui.screens
+﻿package com.example.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -253,7 +253,7 @@ fun ProductsScreen(
 
                 val currentMax = maxPriceFilter ?: 12000.0
                 Text(
-                    text = "${AppStrings.get("max_price", currentLanguage)}: ¥${currentMax.toInt()}",
+                    text = "${AppStrings.get("max_price", currentLanguage)}: $${currentMax.toInt()}",
                     fontSize = 14.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -292,3 +292,4 @@ fun ProductsScreen(
         }
     }
 }
+

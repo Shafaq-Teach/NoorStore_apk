@@ -1,4 +1,4 @@
-package com.example.data.repository
+﻿package com.example.data.repository
 
 import com.example.data.local.*
 import com.example.data.remote.*
@@ -19,9 +19,9 @@ class NoorRepository(private val db: NoorDatabase) {
     private val _coupons = kotlinx.coroutines.flow.MutableStateFlow<List<Coupon>>(
         listOf(
             Coupon("NOOR10", discountPercent = 10.0, minSpend = 0.0, descUg = "بارلىق ماللارغا 10% ئېتىبار", descAr = "خصم 10% على كل السلة", descEn = "10% Off All Orders"),
-            Coupon("YENGILIK", discountAmount = 100.0, minSpend = 1000.0, descUg = "1000 يۈەندىن ئاشسا 100 يۈەن كېمەيتىش", descAr = "خصم 100¥ للطلبات فوق 1000¥", descEn = "¥100 Off for orders over ¥1000"),
-            Coupon("VIP2026", discountAmount = 200.0, minSpend = 2000.0, descUg = "2000 يۈەندىن ئاشسا 200 يۈەن كېمەيتىش", descAr = "خصم 200¥ للطلبات فوق 2000¥", descEn = "¥200 Off for orders over ¥2000"),
-            Coupon("TEZLIK", discountAmount = 50.0, minSpend = 500.0, descUg = "500 يۈەندىن ئاشسا 50 يۈەن كېمەيتىش + تېز يەتكۈزۈش", descAr = "خصم 50¥ + توصيل سريع", descEn = "¥50 Off + Express Delivery")
+            Coupon("YENGILIK", discountAmount = 100.0, minSpend = 1000.0, descUg = "1000$ دىن ئاشسا 100$ كېمەيتىش", descAr = "خصم 100$ للطلبات فوق 1000$", descEn = "$100 Off for orders over $1000"),
+            Coupon("VIP2026", discountAmount = 200.0, minSpend = 2000.0, descUg = "2000$ دىن ئاشسا 200$ كېمەيتىش", descAr = "خصم 200$ للطلبات فوق 2000$", descEn = "$200 Off for orders over $2000"),
+            Coupon("TEZLIK", discountAmount = 50.0, minSpend = 500.0, descUg = "500$ دىن ئاشسا 50$ كېمەيتىش + تېز يەتكۈزۈش", descAr = "خصم 50$ + توصيل سريع", descEn = "$50 Off + Express Delivery")
         )
     )
     val coupons: kotlinx.coroutines.flow.StateFlow<List<Coupon>> = _coupons
@@ -697,4 +697,5 @@ class NoorRepository(private val db: NoorDatabase) {
         }
     }
 }
+
 

@@ -1,4 +1,4 @@
-package com.example
+﻿package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -238,7 +238,7 @@ fun NoorStoreApp(
                                     AppLanguage.ARABIC -> p.nameAr
                                     AppLanguage.ENGLISH -> p.nameEn
                                 }
-                                storeViewModel.launchWhatsApp(context, "0995416715", "I want to buy: $name (¥${p.price})")
+                                storeViewModel.launchWhatsApp(context, "0995416715", "I want to buy: $name ($${p.price})")
                             },
                             onOrderTelegram = { p ->
                                 val name = when (currentLanguage) {
@@ -246,7 +246,7 @@ fun NoorStoreApp(
                                     AppLanguage.ARABIC -> p.nameAr
                                     AppLanguage.ENGLISH -> p.nameEn
                                 }
-                                storeViewModel.launchTelegram(context, "sensiz09985", "I want to buy: $name (¥${p.price})")
+                                storeViewModel.launchTelegram(context, "sensiz09985", "I want to buy: $name ($${p.price})")
                             },
                             onCallStore = { storeViewModel.launchPhoneCall(context, "0995416715") },
                             onLikeClick = { selectedProduct?.let { storeViewModel.incrementLikes(it.id) } },
@@ -349,3 +349,4 @@ fun NoorStoreApp(
         }
     }
 }
+

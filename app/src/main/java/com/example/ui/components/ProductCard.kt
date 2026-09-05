@@ -1,4 +1,4 @@
-package com.example.ui.components
+﻿package com.example.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -172,14 +172,14 @@ fun ProductCard(
                 ) {
                     Column {
                         Text(
-                            text = "¥${product.price.toInt()}",
+                            text = "$${product.price.toInt()}",
                             fontSize = 15.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = GoldPrimary
                         )
                         if (product.originalPrice > product.price) {
                             Text(
-                                text = "¥${product.originalPrice.toInt()}",
+                                text = "$${product.originalPrice.toInt()}",
                                 fontSize = 10.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 textDecoration = TextDecoration.LineThrough
@@ -277,4 +277,5 @@ fun ProductCard(
         }
     }
 }
+
 

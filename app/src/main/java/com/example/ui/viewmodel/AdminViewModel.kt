@@ -1,4 +1,4 @@
-package com.example.ui.viewmodel
+﻿package com.example.ui.viewmodel
 
 import android.content.Context
 import android.content.Intent
@@ -197,7 +197,7 @@ class AdminViewModel(private val repository: NoorRepository) : ViewModel() {
             🛒 ${AppStrings.get("invoice_title", language)}
             🆔 #${order.id}
             📌 ${AppStrings.get("order_status", language)}: $statusText
-            💰 ${AppStrings.get("total_price", language)}: ¥${order.totalAmount}
+            💰 ${AppStrings.get("total_price", language)}: $${order.totalAmount}
             📝 ${AppStrings.get("order_note", language)}: ${order.note.ifBlank { "N/A" }}
             
             📍 ${AppStrings.get("store_address", language)}
@@ -362,8 +362,8 @@ class AdminViewModel(private val repository: NoorRepository) : ViewModel() {
             📊 ${AppStrings.get("sales_report_title", language)}
             📅 ${AppStrings.get("date", language)}: $dateStr
             ━━━━━━━━━━━━━━━━━━━━━━
-            💰 ${AppStrings.get("total_sales_revenue", language)}: ¥$totalRevenue
-            📦 ${AppStrings.get("total_inventory_value", language)}: ¥$totalInventoryValue
+            💰 ${AppStrings.get("total_sales_revenue", language)}: $$totalRevenue
+            📦 ${AppStrings.get("total_inventory_value", language)}: $$totalInventoryValue
             🛒 ${AppStrings.get("total_orders_count", language)}: ${currentOrders.size}
             ⏳ ${AppStrings.get("pending_orders", language)}: $pendingCount
             ✅ ${AppStrings.get("completed_orders", language)}: $completedCount
@@ -385,4 +385,5 @@ class AdminViewModel(private val repository: NoorRepository) : ViewModel() {
         })
     }
 }
+
 

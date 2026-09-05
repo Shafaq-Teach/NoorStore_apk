@@ -1,4 +1,4 @@
-package com.example.ui.screens
+﻿package com.example.ui.screens
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -162,7 +162,7 @@ fun CartScreen(
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "¥${item.product.price.toInt()} x ${item.quantity} = ¥${(item.product.price * item.quantity).toInt()}",
+                                    text = "$${item.product.price.toInt()} x ${item.quantity} = $${(item.product.price * item.quantity).toInt()}",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = GoldPrimary
@@ -323,7 +323,7 @@ fun CartScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(text = AppStrings.get("subtotal", currentLanguage), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                Text(text = "¥${subtotal.toInt()}", fontSize = 13.sp, fontWeight = FontWeight.Bold)
+                                Text(text = "$${subtotal.toInt()}", fontSize = 13.sp, fontWeight = FontWeight.Bold)
                             }
 
                             if (discount > 0) {
@@ -338,7 +338,7 @@ fun CartScreen(
                                         color = Color(0xFF10B981),
                                         fontWeight = FontWeight.Bold
                                     )
-                                    Text(text = "-¥${discount.toInt()}", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF10B981))
+                                    Text(text = "-$${discount.toInt()}", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFF10B981))
                                 }
                             }
 
@@ -355,7 +355,7 @@ fun CartScreen(
                                     fontWeight = FontWeight.Bold
                                 )
                                 Text(
-                                    text = "¥${finalTotal.toInt()}",
+                                    text = "$${finalTotal.toInt()}",
                                     fontSize = 22.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = GoldPrimary
@@ -586,14 +586,14 @@ private fun buildCartInvoiceText(
             AppLanguage.ENGLISH -> item.product.nameEn
         }
         sb.append("${idx + 1}. $pName\n")
-        sb.append("   • Qty: ${item.quantity}  ×  ¥${item.product.price.toInt()}  =  ¥${(item.product.price * item.quantity).toInt()}\n")
+        sb.append("   • Qty: ${item.quantity}  ×  $${item.product.price.toInt()}  =  $${(item.product.price * item.quantity).toInt()}\n")
     }
     sb.append("─────────────────────────────\n")
-    sb.append("💵 ${AppStrings.get("subtotal", lang)}: ¥${subtotal.toInt()}\n")
+    sb.append("💵 ${AppStrings.get("subtotal", lang)}: $${subtotal.toInt()}\n")
     if (discount > 0) {
-        sb.append("🏷️ ${AppStrings.get("discount", lang)} (${appliedCoupon?.code}): -¥${discount.toInt()}\n")
+        sb.append("🏷️ ${AppStrings.get("discount", lang)} (${appliedCoupon?.code}): -$${discount.toInt()}\n")
     }
-    sb.append("⭐ ${AppStrings.get("total_price", lang)}: ¥${total.toInt()}\n\n")
+    sb.append("⭐ ${AppStrings.get("total_price", lang)}: $${total.toInt()}\n\n")
 
     if (note.isNotBlank()) {
         sb.append("📝 ${AppStrings.get("order_note", lang)}: $note\n\n")
@@ -605,4 +605,5 @@ private fun buildCartInvoiceText(
     sb.append("═══════════════════════════════\n")
     return sb.toString()
 }
+
 

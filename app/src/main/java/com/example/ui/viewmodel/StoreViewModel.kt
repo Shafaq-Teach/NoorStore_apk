@@ -1,4 +1,4 @@
-package com.example.ui.viewmodel
+﻿package com.example.ui.viewmodel
 
 import android.content.Context
 import android.content.Intent
@@ -350,7 +350,7 @@ class StoreViewModel(private val repository: NoorRepository) : ViewModel() {
                 _appliedCoupon.value = found
                 _couponMessage.value = AppStrings.get("code_applied", lang)
             } else {
-                _couponMessage.value = AppStrings.get("invalid_code", lang) + " (Min: ¥${found.minSpend.toInt()})"
+                _couponMessage.value = AppStrings.get("invalid_code", lang) + " (Min: $${found.minSpend.toInt()})"
             }
         } else {
             _couponMessage.value = AppStrings.get("invalid_code", lang)
@@ -512,14 +512,14 @@ class StoreViewModel(private val repository: NoorRepository) : ViewModel() {
                 AppLanguage.ENGLISH -> item.product.nameEn
             }
             sb.append("${idx + 1}. $pName\n")
-            sb.append("   • Qty: ${item.quantity}  ×  ¥${item.product.price}  =  ¥${item.product.price * item.quantity}\n")
+            sb.append("   • Qty: ${item.quantity}  ×  $${item.product.price}  =  $${item.product.price * item.quantity}\n")
         }
         sb.append("─────────────────────────────\n")
-        sb.append("💵 ${AppStrings.get("subtotal", lang)}: ¥$subtotal\n")
+        sb.append("💵 ${AppStrings.get("subtotal", lang)}: $$subtotal\n")
         if (discount > 0) {
-            sb.append("🏷️ ${AppStrings.get("discount", lang)} ($couponCode): -¥$discount\n")
+            sb.append("🏷️ ${AppStrings.get("discount", lang)} ($couponCode): -$$discount\n")
         }
-        sb.append("⭐ ${AppStrings.get("total_price", lang)}: ¥$total\n\n")
+        sb.append("⭐ ${AppStrings.get("total_price", lang)}: $$total\n\n")
 
         if (note.isNotBlank()) {
             sb.append("📝 ${AppStrings.get("order_note", lang)}: $note\n\n")
@@ -564,7 +564,7 @@ class StoreViewModel(private val repository: NoorRepository) : ViewModel() {
                 AppLanguage.ARABIC -> item.product.nameAr
                 AppLanguage.ENGLISH -> item.product.nameEn
             }
-            summaryBuilder.append("• $pName x${item.quantity} = ¥${item.product.price * item.quantity}\n")
+            summaryBuilder.append("• $pName x${item.quantity} = $${item.product.price * item.quantity}\n")
         }
 
         val summaryStr = summaryBuilder.toString()
@@ -798,3 +798,4 @@ class StoreViewModel(private val repository: NoorRepository) : ViewModel() {
         mediaPlayer = null
     }
 }
+

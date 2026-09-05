@@ -1,4 +1,4 @@
-package com.example.ui.language
+﻿package com.example.ui.language
 
 object AppStrings {
     fun get(key: String, language: AppLanguage): String {
@@ -34,7 +34,7 @@ object AppStrings {
         "chat_telegram" to "Telegram دا ئالاقىلىشىش",
         "chat_whatsapp" to "WhatsApp تا ئالاقىلىشىش",
         "price" to "باھاسى",
-        "currency" to "¥",
+        "currency" to "$",
         "in_stock" to "ئامباردا بار",
         "out_of_stock" to "ئامباردا يوق",
         "add_to_cart" to "كۆرسىتىشكە قوشۇش",
@@ -173,8 +173,8 @@ object AppStrings {
         "coupon_code" to "كۇپون كودى",
         "discount_type" to "ئېتىبار تۈرى",
         "percent_discount" to "پىرسەنت (%)",
-        "fixed_discount" to "مۇقىم پۇل (¥)",
-        "min_spend_label" to "ئەڭ تۆۋەن ئىستېمال چېكى (¥)",
+        "fixed_discount" to "مۇقىم پۇل ($)",
+        "min_spend_label" to "ئەڭ تۆۋەن ئىستېمال چېكى ($)",
         "coupon_created" to "كۇپون قوشۇلدى!",
         "delete_coupon" to "كۇپوننى ئۆچۈرۈش",
         "sales_report_title" to "نۇرلۇق تېلېفونچىلىقى - كۈندىلىك سېتىش ۋە ئامبار دوكلاتى",
@@ -228,7 +228,7 @@ object AppStrings {
         "chat_telegram" to "تحدث عبر تيليجرام",
         "chat_whatsapp" to "تحدث عبر واتساب",
         "price" to "السعر",
-        "currency" to "¥",
+        "currency" to "$",
         "in_stock" to "متوفر",
         "out_of_stock" to "غير متوفر",
         "add_to_cart" to "إضافة إلى السلة",
@@ -321,7 +321,7 @@ object AppStrings {
         "ai_assistant_subtitle" to "اكتب ميزانيتك واحتياجاتك وسنساعدك باختيار الجهاز الأنسب",
         "ai_quick_camera" to "📸 أفضل هاتف للتصوير",
         "ai_quick_study" to "📚 أفضل تابلت للدراسة والرسم",
-        "ai_quick_budget" to "💰 الأفضل بأقل من 3000¥",
+        "ai_quick_budget" to "💰 الأفضل بأقل من 500$",
         "ai_quick_battery" to "⚡ أطول عمر بطارية",
         "ai_quick_gaming" to "🎮 الأقوى للألعاب والسرعة",
         "ask_ai" to "استشر المساعد الذكي",
@@ -367,8 +367,8 @@ object AppStrings {
         "coupon_code" to "رمز الكوبون",
         "discount_type" to "نوع الخصم",
         "percent_discount" to "نسبة مئوية (%)",
-        "fixed_discount" to "مبلغ ثابت (¥)",
-        "min_spend_label" to "الحد الأدنى للطلب (¥)",
+        "fixed_discount" to "مبلغ ثابت ($)",
+        "min_spend_label" to "الحد الأدنى للطلب ($)",
         "coupon_created" to "تم إنشاء الكوبون بنجاح!",
         "delete_coupon" to "حذف الكوبون",
         "sales_report_title" to "متجر النور - تقرير المبيعات والمخزون اليومي",
@@ -422,7 +422,7 @@ object AppStrings {
         "chat_telegram" to "Chat on Telegram",
         "chat_whatsapp" to "Chat on WhatsApp",
         "price" to "Price",
-        "currency" to "¥",
+        "currency" to "$",
         "in_stock" to "In Stock",
         "out_of_stock" to "Out of Stock",
         "add_to_cart" to "Add to Cart",
@@ -515,7 +515,7 @@ object AppStrings {
         "ai_assistant_subtitle" to "Get instant recommendations based on budget and tech needs",
         "ai_quick_camera" to "📸 Best Camera Phone",
         "ai_quick_study" to "📚 Best Study & Work Tablet",
-        "ai_quick_budget" to "💰 Best Flagship under ¥3000",
+        "ai_quick_budget" to "💰 Best Flagship under $3000",
         "ai_quick_battery" to "⚡ Longest Battery Life",
         "ai_quick_gaming" to "🎮 Ultimate Gaming & Performance",
         "ask_ai" to "Ask AI Advisor",
@@ -561,8 +561,8 @@ object AppStrings {
         "coupon_code" to "Coupon Code",
         "discount_type" to "Discount Type",
         "percent_discount" to "Percentage (%)",
-        "fixed_discount" to "Fixed Amount (¥)",
-        "min_spend_label" to "Min Spend Requirement (¥)",
+        "fixed_discount" to "Fixed Amount ($)",
+        "min_spend_label" to "Min Spend Requirement ($)",
         "coupon_created" to "Coupon Created Successfully!",
         "delete_coupon" to "Delete Coupon",
         "sales_report_title" to "Noor Mobile Store - Daily Business & Stock Summary",
@@ -592,3 +592,4 @@ object AppStrings {
         "min_spend_prefix" to "Min Spend"
     )
 }
+

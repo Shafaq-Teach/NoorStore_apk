@@ -1,4 +1,4 @@
-package com.example.ui.screens
+﻿package com.example.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -239,7 +239,7 @@ fun ProductDetailScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Text(
-                    text = "¥${product.price}",
+                    text = "$${product.price}",
                     fontSize = 26.sp,
                     fontWeight = FontWeight.ExtraBold,
                     color = GoldPrimary
@@ -247,7 +247,7 @@ fun ProductDetailScreen(
 
                 if (product.originalPrice > product.price) {
                     Text(
-                        text = "¥${product.originalPrice}",
+                        text = "$${product.originalPrice}",
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textDecoration = TextDecoration.LineThrough
@@ -635,3 +635,4 @@ fun ProductImageDisplay(
         contentScale = contentScale
     )
 }
+

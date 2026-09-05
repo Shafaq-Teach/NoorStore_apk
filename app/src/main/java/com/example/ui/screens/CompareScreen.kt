@@ -1,4 +1,4 @@
-package com.example.ui.screens
+﻿package com.example.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -301,7 +301,7 @@ fun CompareScreen(
                                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                                             )
                                             Text(
-                                                text = "¥${product.price.toInt()}",
+                                                text = "$${product.price.toInt()}",
                                                 fontSize = 16.sp,
                                                 fontWeight = FontWeight.ExtraBold,
                                                 color = GoldPrimary
@@ -455,7 +455,7 @@ fun CompareScreen(
                                     )
                                     Column(modifier = Modifier.weight(1f)) {
                                         Text(text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                                        Text(text = "¥${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = GoldPrimary, fontWeight = FontWeight.SemiBold)
+                                        Text(text = "$${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = GoldPrimary, fontWeight = FontWeight.SemiBold)
                                     }
                                     Icon(Icons.Default.AddCircle, contentDescription = "Add", tint = GoldPrimary)
                                 }
@@ -472,3 +472,4 @@ fun CompareScreen(
         )
     }
 }
+

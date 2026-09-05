@@ -1,4 +1,4 @@
-package com.example.ui.components
+﻿package com.example.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -266,7 +266,7 @@ fun AIAssistantDialog(
                                                             overflow = TextOverflow.Ellipsis
                                                         )
                                                         Text(
-                                                            text = "¥${product.price.toInt()} • ${product.brand}",
+                                                            text = "$${product.price.toInt()} • ${product.brand}",
                                                             fontSize = 11.sp,
                                                             fontWeight = FontWeight.ExtraBold,
                                                             color = GoldPrimary
@@ -372,3 +372,4 @@ fun AIAssistantDialog(
         }
     }
 }
+

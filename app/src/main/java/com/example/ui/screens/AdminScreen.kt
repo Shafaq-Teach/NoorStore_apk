@@ -1,4 +1,4 @@
-package com.example.ui.screens
+﻿package com.example.ui.screens
 
 import android.content.Context
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -426,7 +426,7 @@ fun AdminScreen(
                     OutlinedTextField(
                         value = newPriceStr,
                         onValueChange = { newPriceStr = it },
-                        label = { Text(AppStrings.get("price", currentLanguage) + " (¥)") },
+                        label = { Text(AppStrings.get("price", currentLanguage) + " ($)") },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(10.dp)
@@ -550,7 +550,7 @@ fun AnalyticsOverviewTab(
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 KpiStatCard(
                     title = AppStrings.get("total_sales_revenue", currentLanguage),
-                    value = "¥${totalRevenue.toInt()}",
+                    value = "$${totalRevenue.toInt()}",
                     subtitle = "${orders.size} " + AppStrings.get("total_orders_count", currentLanguage),
                     icon = Icons.Default.MonetizationOn,
                     iconColor = GoldPrimary,
@@ -558,7 +558,7 @@ fun AnalyticsOverviewTab(
                 )
                 KpiStatCard(
                     title = AppStrings.get("total_inventory_value", currentLanguage),
-                    value = "¥${totalInventory.toInt()}",
+                    value = "$${totalInventory.toInt()}",
                     subtitle = "${products.size} " + AppStrings.get("products", currentLanguage),
                     icon = Icons.Default.Inventory2,
                     iconColor = SapphireBlue,
@@ -657,7 +657,7 @@ fun AnalyticsOverviewTab(
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(name, fontWeight = FontWeight.Bold, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                            Text("¥${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("$${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Button(
                             onClick = { onToggleStock(prod) },
@@ -701,7 +701,7 @@ fun AnalyticsOverviewTab(
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(name, fontWeight = FontWeight.Bold, fontSize = 13.sp, maxLines = 1)
-                            Text("¥${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            Text("$${prod.price.toInt()} • ${prod.brand}", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             BadgeChip(text = "👍 ${prod.likesCount}", color = SapphireBlue)
@@ -955,7 +955,7 @@ fun OrderLifecycleCard(
                     Text("📞 ${order.customerPhone}", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("¥${order.totalAmount.toInt()}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = GoldPrimary)
+                    Text("$${order.totalAmount.toInt()}", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = GoldPrimary)
                     Text(dateFormatted, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             }
@@ -1183,7 +1183,7 @@ fun AdminProductCard(
                         modifier = Modifier.clickable { onQuickPrice() }
                     ) {
                         Text(
-                            text = "¥${product.price.toInt()}",
+                            text = "$${product.price.toInt()}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = GoldPrimary
@@ -1316,7 +1316,7 @@ fun CouponsManagementTab(
                                 val discountText = if (coupon.discountPercent > 0) {
                                     "${coupon.discountPercent.toInt()}% " + AppStrings.get("discount_off", currentLanguage)
                                 } else {
-                                    "¥${coupon.discountAmount.toInt()} " + AppStrings.get("discount_off", currentLanguage)
+                                    "$${coupon.discountAmount.toInt()} " + AppStrings.get("discount_off", currentLanguage)
                                 }
                                 Box(
                                     modifier = Modifier
@@ -1331,7 +1331,7 @@ fun CouponsManagementTab(
                             Text(desc, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface)
                             if (coupon.minSpend > 0) {
                                 Text(
-                                    text = "${AppStrings.get("min_spend_prefix", currentLanguage)}: ¥${coupon.minSpend.toInt()}",
+                                    text = "${AppStrings.get("min_spend_prefix", currentLanguage)}: $${coupon.minSpend.toInt()}",
                                     fontSize = 10.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -1760,7 +1760,7 @@ fun ProductFormDialog(
                     OutlinedTextField(
                         value = priceStr,
                         onValueChange = { priceStr = it },
-                        label = { Text(AppStrings.get("price", currentLanguage) + " (¥)", fontSize = 11.sp) },
+                        label = { Text(AppStrings.get("price", currentLanguage) + " ($)", fontSize = 11.sp) },
                         singleLine = true,
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(10.dp)
@@ -2124,7 +2124,7 @@ fun AddCouponDialog(
                 OutlinedTextField(
                     value = amountStr,
                     onValueChange = { amountStr = it },
-                    label = { Text(AppStrings.get("discount_value", currentLanguage) + if (isPercent) " (%)" else " (¥)", fontSize = 11.sp) },
+                    label = { Text(AppStrings.get("discount_value", currentLanguage) + if (isPercent) " (%)" else " ($)", fontSize = 11.sp) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(10.dp)
@@ -2832,7 +2832,7 @@ fun SyncSystemWindowModal(
                                             Text(log["time"].toString(), fontSize = 9.sp, color = Color(0xFF64748B))
                                         }
                                         Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                            Text("¥${log["price"]}", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
+                                            Text("$${log["price"]}", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
                                             Text("💬 WhatsApp ✅", fontSize = 9.sp, color = Color(0xFF38BDF8))
                                         }
                                     }
@@ -2875,3 +2875,4 @@ fun SyncSystemWindowModal(
         }
     }
 }
+

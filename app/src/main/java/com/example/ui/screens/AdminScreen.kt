@@ -2442,12 +2442,15 @@ fun SyncSystemWindowModal(
     var availableGroups by remember { mutableStateOf<List<Pair<String, String>>>(emptyList()) }
     var selectedGroupName by remember { mutableStateOf("Noor Store خېرىدارلار گۇرۇپپىسى") }
     var syncedLogs by remember { mutableStateOf<List<Map<String, Any>>>(emptyList()) }
+    var geminiConfigured by remember { mutableStateOf(false) }
+    var aiKeyInput by remember { mutableStateOf("") }
 
     LaunchedEffect(syncStateJson) {
         if (!syncStateJson.isNullOrBlank()) {
             try {
                 val obj = org.json.JSONObject(syncStateJson)
                 whatsappStatus = obj.optString("whatsappStatus", "CONNECTED")
+                geminiConfigured = obj.optBoolean("geminiConfigured", false)
                 val qrRaw = obj.optString("latestQrDataUrl", "")
                 latestQrBase64 = if (qrRaw.contains("base64,")) {
                     qrRaw.substringAfter("base64,")
@@ -2578,7 +2581,7 @@ fun SyncSystemWindowModal(
                         Button(
                             onClick = {
                                 try {
-                                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://shafaq-teach.github.io/Noor_Store/"))
+                                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://noor-store.yulgun353.workers.dev/"))
                                     context.startActivity(intent)
                                 } catch (e: Exception) {}
                             },
@@ -2601,7 +2604,7 @@ fun SyncSystemWindowModal(
                 }
             }
 
-            // Status Cards (3 Cards)
+            // Status Cards (4 Cards)
             // 1. Telegram Bot
             Card(
                 shape = RoundedCornerShape(20.dp),
@@ -2659,6 +2662,38 @@ fun SyncSystemWindowModal(
                         }
                     }
                     Text("تور بەت ۋە ئەپ Supabase بىلەن بىرلا ۋاقىتتا يېڭىلىنىدۇ", fontSize = 11.sp, color = Color(0xFF94A3B8))
+                }
+            }
+
+            // 3. AI Assistant
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
+                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text("🤖 سۈنئىي ئەقىل (AI) ياردەمچىسى", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = if (geminiConfigured) Color(0xFF10B981).copy(alpha = 0.2f) else Color(0xFF0284C7).copy(alpha = 0.2f),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, if (geminiConfigured) Color(0xFF10B981).copy(alpha = 0.3f) else Color(0xFF0284C7).copy(alpha = 0.3f))
+                        ) {
+                            Text(
+                                if (geminiConfigured) "✨ Gemini AI ئاكتىپ" else "🧠 ئىچكى ئەقلىي ماتور",
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = if (geminiConfigured) Color(0xFF34D399) else Color(0xFF38BDF8)
+                            )
+                        }
+                    }
+                    Text("مەھسۇلات باھاسى، نامى ۋە چۈشەندۈرۈشىنى ئەقلىي پەرقلەندۈرۈپ تەييارلايدۇ.", fontSize = 11.sp, color = Color(0xFF94A3B8))
                 }
             }
 

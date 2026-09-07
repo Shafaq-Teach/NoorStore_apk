@@ -96,6 +96,7 @@ fun ProductImageView(
 ) {
     val context = LocalContext.current
     val trimmed = imageSource.trim()
+    val cloudflareCdnBase = "https://noor-store.yulgun353.workers.dev"
 
     // 1. Check if Base64 Data URL or raw Base64
     val isBase64 = remember(trimmed) {
@@ -121,25 +122,47 @@ fun ProductImageView(
         }
     }
 
-    val isFile = remember(trimmed) {
-        trimmed.startsWith("/") || trimmed.startsWith("file://")
-    }
-
-    val isWeb = remember(trimmed) {
-        trimmed.startsWith("http://") || trimmed.startsWith("https://")
-    }
-
-    val drawableResId = remember(trimmed, isBase64, isFile, isWeb) {
-        if (isBase64 || isFile || isWeb || trimmed.isBlank()) {
+    // 2. Check for App Bundled Drawable Resource (e.g. img_phones_...)
+    val drawableResId = remember(trimmed, isBase64) {
+        if (isBase64 || trimmed.startsWith("http") || trimmed.isBlank()) {
             0
         } else {
-            val cleanName = trimmed.substringBeforeLast(".")
+            val cleanName = trimmed.removePrefix("/images/").removePrefix("images/").removePrefix("/").substringBeforeLast(".")
             context.resources.getIdentifier(cleanName, "drawable", context.packageName)
         }
     }
 
+    // 3. Resolve Cloudflare CDN / Web URL for non-local resources
+    val webUrl = remember(trimmed, isBase64, drawableResId) {
+        if (isBase64 || drawableResId != 0 || trimmed.isBlank()) {
+            null
+        } else if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+            trimmed
+        } else if (trimmed.startsWith("/images/")) {
+            "$cloudflareCdnBase$trimmed"
+        } else if (trimmed.startsWith("images/")) {
+            "$cloudflareCdnBase/$trimmed"
+        } else if (trimmed.startsWith("img_") || trimmed.endsWith(".jpg") || trimmed.endsWith(".png") || trimmed.endsWith(".webp")) {
+            "$cloudflareCdnBase/images/$trimmed"
+        } else {
+            null
+        }
+    }
+
+    // 4. Local device file path check
+    val localFile = remember(trimmed, isBase64, drawableResId, webUrl) {
+        if (isBase64 || drawableResId != 0 || webUrl != null || trimmed.isBlank()) {
+            null
+        } else if (trimmed.startsWith("file://") || trimmed.startsWith("/")) {
+            val f = File(trimmed.removePrefix("file://"))
+            if (f.exists()) f else null
+        } else {
+            null
+        }
+    }
+
     when {
-        // A. Base64 decoded bitmap
+        // A. Base64 decoded bitmap (instant dynamic uploads)
         decodedBitmap != null -> {
             Image(
                 bitmap = decodedBitmap.asImageBitmap(),
@@ -148,7 +171,7 @@ fun ProductImageView(
                 contentScale = contentScale
             )
         }
-        // B. App bundled drawable resource (e.g. img_phones_...)
+        // B. App bundled drawable resource
         drawableResId != 0 -> {
             Image(
                 painter = painterResource(id = drawableResId),
@@ -157,11 +180,11 @@ fun ProductImageView(
                 contentScale = contentScale
             )
         }
-        // C. Web URL (e.g. https://...)
-        isWeb -> {
+        // C. Cloudflare Global CDN / Web URL with disk caching
+        webUrl != null -> {
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(trimmed)
+                    .data(webUrl)
                     .crossfade(true)
                     .build(),
                 contentDescription = contentDescription,
@@ -171,30 +194,10 @@ fun ProductImageView(
             )
         }
         // D. Local device file path
-        isFile -> {
-            val file = remember(trimmed) {
-                File(trimmed.removePrefix("file://"))
-            }
-            if (file.exists()) {
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(file)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = contentDescription,
-                    modifier = modifier,
-                    contentScale = contentScale,
-                    error = painterResource(id = android.R.drawable.ic_menu_gallery)
-                )
-            } else {
-                FallbackPlaceholder(modifier)
-            }
-        }
-        // E. General string resource or fallback
-        trimmed.isNotBlank() -> {
+        localFile != null -> {
             AsyncImage(
                 model = ImageRequest.Builder(context)
-                    .data(trimmed)
+                    .data(localFile)
                     .crossfade(true)
                     .build(),
                 contentDescription = contentDescription,
@@ -203,6 +206,7 @@ fun ProductImageView(
                 error = painterResource(id = android.R.drawable.ic_menu_gallery)
             )
         }
+        // E. Fallback Placeholder
         else -> {
             FallbackPlaceholder(modifier)
         }

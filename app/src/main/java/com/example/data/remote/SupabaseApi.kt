@@ -11,8 +11,8 @@ import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 object SupabaseConfig {
-    const val BASE_URL = "https://yufuhjdmzgehwnypdpba.supabase.co/rest/v1/"
-    const val API_KEY = "sb_publishable_db9lknMr2xWIuxzdBUIvww_le2sVZEu"
+    const val BASE_URL = "https://ufkblidmcscbgardibkm.supabase.co/rest/v1/"
+    const val API_KEY = "sb_publishable_9LBjrGb7H2D4LKpN8s4gvQ_SknfuLEH"
 }
 
 @JsonClass(generateAdapter = true)

@@ -1,21 +1,33 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Noor Store ProGuard & R8 Optimization Rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# 1. Kotlin & Coroutines
+-keepclassmembers class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# 2. Android Compose & ViewModel
+-keep class androidx.compose.** { *; }
+-dontwarn androidx.compose.**
+-keep class androidx.lifecycle.ViewModel { *; }
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# 3. Room Database
+-keep class * extends androidx.room.RoomDatabase
+-dontwarn androidx.room.paging.**
+-keep @androidx.room.Entity class * { *; }
+-keep @androidx.room.Dao class * { *; }
+
+# 4. Retrofit & OkHttp & Moshi
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature, InnerClasses, EnclosingMethod
+-keepclassmembers enum * { *; }
+-keepclassmembers class * {
+    @com.squareup.moshi.Json *;
+    @com.squareup.moshi.JsonClass *;
+}
+-keep class com.squareup.moshi.** { *; }
+-keep class com.example.data.** { *; }
+
+# 5. Coil Image Loading
+-keep class io.coil-kt.** { *; }
+-dontwarn io.coil-kt.**

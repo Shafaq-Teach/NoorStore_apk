@@ -76,7 +76,7 @@ data class SupabaseCouponDto(
 )
 
 interface SupabaseApi {
-    @GET("products?select=*&order=id.desc")
+    @GET("products?select=*&order=created_at.desc")
     suspend fun getProducts(
         @Header("apikey") apiKey: String = SupabaseConfig.API_KEY,
         @Header("Authorization") auth: String = "Bearer ${SupabaseConfig.API_KEY}"

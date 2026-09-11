@@ -1,4 +1,4 @@
-﻿name: Build Noor Store APK
+name: Build Noor Store APK
 
 on:
   push:
@@ -43,9 +43,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: v1.0.${{ github.run_number }}
-          name: "Noor Store App v1.0.${{ github.run_number }}"
-          body: "Noor Store APK (Supabase Realtime & Bug Fixes)."
+          tag_name: v1.0.0
+          name: "Noor Store App v1.0.0"
+          body: "Noor Store App v1.0.0 Official Release (Supabase 24/7 Cloud Sync & Bug Fixes)."
           files: app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

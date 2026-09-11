@@ -37,7 +37,8 @@ data class SupabaseProductDto(
     @Json(name = "specs_ar") val specsAr: String? = null,
     @Json(name = "specs_en") val specsEn: String? = null,
     @Json(name = "likes_count") val likesCount: Int? = null,
-    @Json(name = "hearts_count") val heartsCount: Int? = null
+    @Json(name = "hearts_count") val heartsCount: Int? = null,
+    @Json(name = "created_at") val createdAt: String? = null
 )
 
 @JsonClass(generateAdapter = true)

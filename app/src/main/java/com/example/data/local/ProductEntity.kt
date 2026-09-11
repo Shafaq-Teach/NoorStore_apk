@@ -25,7 +25,8 @@ data class ProductEntity(
     val specsAr: String = "",
     val specsEn: String = "",
     val likesCount: Int = 0,
-    val heartsCount: Int = 0
+    val heartsCount: Int = 0,
+    val createdAt: String = ""
 ) {
     fun getAllImages(): List<String> {
         val list = mutableListOf<String>()

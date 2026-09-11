@@ -299,7 +299,7 @@ class NoorRepository(private val db: NoorDatabase) {
             if (response.isSuccessful) {
                 val remoteList = response.body().orEmpty()
                 if (remoteList.isNotEmpty()) {
-                    db.productDao().deleteAll()
+                    val remoteIds = remoteList.mapNotNull { it.id?.toInt() }.toSet()
                     for (item in remoteList) {
                         val entity = ProductEntity(
                             id = item.id?.toInt() ?: 0,
@@ -322,12 +322,24 @@ class NoorRepository(private val db: NoorDatabase) {
                             specsAr = item.specsAr ?: "",
                             specsEn = item.specsEn ?: "",
                             likesCount = item.likesCount ?: 0,
-                            heartsCount = item.heartsCount ?: 0
+                            heartsCount = item.heartsCount ?: 0,
+                            createdAt = item.createdAt ?: ""
                         )
                         db.productDao().insertProduct(entity)
                     }
+
+                    // Remove only products that were deleted from Supabase without flickering
+                    val localList = db.productDao().getAllProductsList()
+                    for (local in localList) {
+                        if (local.id !in remoteIds) {
+                            db.productDao().deleteProductById(local.id)
+                        }
+                    }
                 }
             }
+        } catch (e: Exception) {
+            android.util.Log.e("NoorRepository", "syncFromSupabase error: ${e.message}")
+        }
 
             // Sync Orders from Supabase to Local
             val ordersResp = api.getOrders()

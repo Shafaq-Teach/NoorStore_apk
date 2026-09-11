@@ -1,4 +1,4 @@
-﻿package com.example.data.repository
+package com.example.data.repository
 
 import com.example.data.local.*
 import com.example.data.remote.*
@@ -299,6 +299,7 @@ class NoorRepository(private val db: NoorDatabase) {
             if (response.isSuccessful) {
                 val remoteList = response.body().orEmpty()
                 if (remoteList.isNotEmpty()) {
+                    db.productDao().deleteAll()
                     for (item in remoteList) {
                         val entity = ProductEntity(
                             id = item.id?.toInt() ?: 0,

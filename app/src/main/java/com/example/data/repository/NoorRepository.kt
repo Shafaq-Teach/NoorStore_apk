@@ -337,9 +337,6 @@ class NoorRepository(private val db: NoorDatabase) {
                     }
                 }
             }
-        } catch (e: Exception) {
-            android.util.Log.e("NoorRepository", "syncFromSupabase error: ${e.message}")
-        }
 
             // Sync Orders from Supabase to Local
             val ordersResp = api.getOrders()

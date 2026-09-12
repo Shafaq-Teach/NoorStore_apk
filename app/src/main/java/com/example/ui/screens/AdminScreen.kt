@@ -2591,20 +2591,6 @@ fun SyncSystemWindowModal(
                         }
 
                         IconButton(
-                            onClick = {
-                                try {
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://noor-store-bot.yulgun353.workers.dev"))
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {}
-                            },
-                            modifier = Modifier
-                                .size(30.dp)
-                                .background(Color(0xFF1E293B), CircleShape)
-                        ) {
-                            Icon(Icons.Default.OpenInBrowser, contentDescription = "Open in Browser", tint = Color(0xFFCBD5E1), modifier = Modifier.size(15.dp))
-                        }
-
-                        IconButton(
                             onClick = onDismiss,
                             modifier = Modifier
                                 .size(30.dp)

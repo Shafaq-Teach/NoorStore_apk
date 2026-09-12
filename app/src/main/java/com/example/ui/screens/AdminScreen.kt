@@ -1,6 +1,12 @@
-﻿package com.example.ui.screens
+package com.example.ui.screens
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -2508,6 +2514,8 @@ fun SyncSystemWindowModal(
         } else null
     }
 
+    var webViewInstance by remember { mutableStateOf<WebView?>(null) }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFF020617) // Deep dark slate-950
@@ -2515,362 +2523,127 @@ fun SyncSystemWindowModal(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(14.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+                .padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Header Card
             Card(
-                shape = RoundedCornerShape(24.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
                 border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B))
             ) {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(10.dp)
+                        Box(
+                            modifier = Modifier
+                                .size(36.dp)
+                                .background(
+                                    Brush.linearGradient(listOf(Color(0xFF10B981), Color(0xFF38BDF8))),
+                                    RoundedCornerShape(10.dp)
+                                ),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(42.dp)
-                                    .background(
-                                        Brush.linearGradient(listOf(Color(0xFF10B981), Color(0xFFF59E0B))),
-                                        RoundedCornerShape(14.dp)
-                                    ),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text("⚡", fontSize = 20.sp)
-                            }
-                            Column {
+                            Text("⚡", fontSize = 16.sp)
+                        }
+                        Column {
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 Text(
-                                    "Noor Store - ئاپتوماتىك ماس قەدەملەش سىستېمىسى",
-                                    fontSize = 13.sp,
+                                    "Noor Store — كۆپ سۇپىلىق مەركەز",
+                                    fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFF34D399)
                                 )
-                                Text(
-                                    "Telegram ➡️ Supabase (تور بېكەت + ئەپ) ➡️ WhatsApp",
-                                    fontSize = 10.sp,
-                                    color = Color(0xFF94A3B8)
-                                )
+                                Surface(
+                                    shape = RoundedCornerShape(6.dp),
+                                    color = Color(0xFF10B981).copy(alpha = 0.2f),
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF10B981).copy(alpha = 0.3f))
+                                ) {
+                                    Text("Cloudflare 24/7", modifier = Modifier.padding(horizontal = 5.dp, vertical = 2.dp), fontSize = 8.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
+                                }
                             }
+                            Text(
+                                "https://noor-store-bot.yulgun353.workers.dev",
+                                fontSize = 9.sp,
+                                color = Color(0xFF94A3B8)
+                            )
+                        }
+                    }
+
+                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        IconButton(
+                            onClick = {
+                                webViewInstance?.reload()
+                            },
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color(0xFF1E293B), CircleShape)
+                        ) {
+                            Icon(Icons.Default.Refresh, contentDescription = "Refresh", tint = Color(0xFF38BDF8), modifier = Modifier.size(15.dp))
+                        }
+
+                        IconButton(
+                            onClick = {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://noor-store-bot.yulgun353.workers.dev"))
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {}
+                            },
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color(0xFF1E293B), CircleShape)
+                        ) {
+                            Icon(Icons.Default.OpenInBrowser, contentDescription = "Open in Browser", tint = Color(0xFFCBD5E1), modifier = Modifier.size(15.dp))
                         }
 
                         IconButton(
                             onClick = onDismiss,
                             modifier = Modifier
-                                .size(34.dp)
-                                .background(Color(0xFF1E293B), CircleShape)
+                                .size(30.dp)
+                                .background(Color(0xFFDC2626).copy(alpha = 0.2f), CircleShape)
                         ) {
-                            Icon(Icons.Default.Close, contentDescription = "Close", tint = Color(0xFF94A3B8), modifier = Modifier.size(18.dp))
-                        }
-                    }
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Button(
-                            onClick = {
-                                try {
-                                    val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://noor-store.yulgun353.workers.dev/"))
-                                    context.startActivity(intent)
-                                } catch (e: Exception) {}
-                            },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF059669))
-                        ) {
-                            Text("🌐 تور دۇكىنى", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                        }
-
-                        OutlinedButton(
-                            onClick = onRefreshSync,
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF38BDF8)),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B))
-                        ) {
-                            Text("🔄 يېڭىلاش", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Icon(Icons.Default.Close, contentDescription = "Close", tint = Color(0xFFF87171), modifier = Modifier.size(15.dp))
                         }
                     }
                 }
             }
 
-            // Status Cards (4 Cards)
-            // 1. Telegram Bot
+            // Embedded Live Cloudflare Worker Dashboard WebView
             Card(
                 shape = RoundedCornerShape(20.dp),
                 colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
                 border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
             ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Image(
-                                painter = painterResource(id = com.example.R.drawable.ic_telegram_3d),
-                                contentDescription = "Telegram",
-                                modifier = Modifier.size(20.dp).clip(RoundedCornerShape(5.dp))
+                AndroidView(
+                    factory = { ctx ->
+                        WebView(ctx).apply {
+                            layoutParams = ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
                             )
-                            Text("Telegram Bot", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
+                            settings.javaScriptEnabled = true
+                            settings.domStorageEnabled = true
+                            settings.useWideViewPort = true
+                            settings.loadWithOverviewMode = true
+                            settings.setSupportZoom(true)
+                            webViewClient = WebViewClient()
+                            loadUrl("https://noor-store-bot.yulgun353.workers.dev")
+                            webViewInstance = this
                         }
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFF10B981).copy(alpha = 0.2f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF10B981).copy(alpha = 0.3f))
-                        ) {
-                            Text("✅ ئۇلاندى", modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
-                        }
-                    }
-                    Text("بوت: @NoorStore520_Bot", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFCBD5E1))
-                    Text("قانىتىش قانىلى: @NoorStore2 (Admin ID: 7251543464)", fontSize = 10.sp, color = Color(0xFF94A3B8))
-                }
-            }
-
-            // 2. Supabase Cloud
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("⚡ Supabase Cloud & تور دۇكىنى", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = Color(0xFF10B981).copy(alpha = 0.2f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF10B981).copy(alpha = 0.3f))
-                        ) {
-                            Text("✅ ماس قەدەملەنگەن", modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp), fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
-                        }
-                    }
-                    Text("تور بەت ۋە ئەپ Supabase بىلەن بىرلا ۋاقىتتا يېڭىلىنىدۇ", fontSize = 11.sp, color = Color(0xFF94A3B8))
-                }
-            }
-
-            // 3. AI Assistant
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("🤖 سۈنئىي ئەقىل (AI) ياردەمچىسى", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = if (geminiConfigured) Color(0xFF10B981).copy(alpha = 0.2f) else Color(0xFF0284C7).copy(alpha = 0.2f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, if (geminiConfigured) Color(0xFF10B981).copy(alpha = 0.3f) else Color(0xFF0284C7).copy(alpha = 0.3f))
-                        ) {
-                            Text(
-                                if (geminiConfigured) "✨ Gemini AI ئاكتىپ" else "🧠 ئىچكى ئەقلىي ماتور",
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (geminiConfigured) Color(0xFF34D399) else Color(0xFF38BDF8)
-                            )
-                        }
-                    }
-                    Text("مەھسۇلات باھاسى، نامى ۋە چۈشەندۈرۈشىنى ئەقلىي پەرقلەندۈرۈپ تەييارلايدۇ.", fontSize = 11.sp, color = Color(0xFF94A3B8))
-                }
-            }
-
-            // 3. WhatsApp Integration
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Image(
-                                painter = painterResource(id = com.example.R.drawable.ic_whatsapp_3d),
-                                contentDescription = "WhatsApp",
-                                modifier = Modifier.size(20.dp).clip(RoundedCornerShape(5.dp))
-                            )
-                            Text("WhatsApp خېرىدارلار بازىسى", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
-                        }
-                        val isConnected = whatsappStatus == "CONNECTED"
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = if (isConnected) Color(0xFF10B981).copy(alpha = 0.2f) else Color(0xFFF59E0B).copy(alpha = 0.2f),
-                            border = androidx.compose.foundation.BorderStroke(1.dp, if (isConnected) Color(0xFF10B981).copy(alpha = 0.3f) else Color(0xFFF59E0B).copy(alpha = 0.3f))
-                        ) {
-                            Text(
-                                if (isConnected) "✅ ئوچۇق" else "⏳ ئۇلىنىۋاتىدۇ",
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isConnected) Color(0xFF34D399) else Color(0xFFFBBF24)
-                            )
-                        }
-                    }
-
-                    // QR Code if available
-                    if (qrBitmap != null) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Text("📱 WhatsApp ئارقىلىق تىزىملىتىش ئۈچۈن QR كودنى سىكاننېرلاڭ:", fontSize = 11.sp, color = Color(0xFFCBD5E1))
-                            Surface(
-                                shape = RoundedCornerShape(16.dp),
-                                color = Color.White,
-                                modifier = Modifier.padding(8.dp)
-                            ) {
-                                Image(
-                                    bitmap = qrBitmap,
-                                    contentDescription = "WhatsApp QR Code",
-                                    modifier = Modifier.size(200.dp).padding(8.dp)
-                                )
-                            }
-                        }
-                    }
-
-                    // Selected Target Group
-                    Surface(
-                        shape = RoundedCornerShape(12.dp),
-                        color = Color(0xFF020617),
-                        border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                            Text("🎯 نىشانلىق WhatsApp گۇرۇپپىسى:", fontSize = 10.sp, fontWeight = FontWeight.Bold, color = Color(0xFF94A3B8))
-                            Text(selectedGroupName, fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
-                        }
-                    }
-
-                    // WhatsApp Action Buttons
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Button(
-                            onClick = {
-                                onSendSyncCommand("{\"command\":\"REFRESH_GROUPS\"}")
-                            },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E293B))
-                        ) {
-                            Text("🔄 گۇرۇپپىلارنى يېڭىلاش", fontSize = 10.sp, color = Color(0xFF38BDF8), fontWeight = FontWeight.Bold)
-                        }
-
-                        Button(
-                            onClick = {
-                                onSendSyncCommand("{\"command\":\"RESET_WHATSAPP\"}")
-                            },
-                            modifier = Modifier.weight(1f),
-                            shape = RoundedCornerShape(12.dp),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E293B))
-                        ) {
-                            Text("🔄 QR كودنى قايتا ئۇلاش", fontSize = 10.sp, color = Color(0xFFF1F5F9), fontWeight = FontWeight.Bold)
-                        }
-                    }
-                }
-            }
-
-            // 4. Live Synced Products Logs Card
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF0F172A)),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("📋 ئەڭ يېڭى ماس قەدەملەنگەن مەھسۇلاتلار خاتىرىسى (${syncedLogs.size})", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFFCBD5E1))
-
-                    if (syncedLogs.isEmpty()) {
-                        Text(
-                            "تېخى مەھسۇلات يوللانمىدى. تېلېگرام بوتىڭىزغا مەھسۇلات رەسىمى ۋە باھاسىنى تاشلاپ سىناپ بېقىڭ!",
-                            fontSize = 11.sp,
-                            color = Color(0xFF64748B),
-                            modifier = Modifier.padding(vertical = 10.dp)
-                        )
-                    } else {
-                        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                            syncedLogs.take(15).forEach { log ->
-                                Surface(
-                                    shape = RoundedCornerShape(12.dp),
-                                    color = Color(0xFF020617),
-                                    border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF1E293B)),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(10.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                            Text(log["name"].toString(), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFF1F5F9))
-                                            Text(log["time"].toString(), fontSize = 9.sp, color = Color(0xFF64748B))
-                                        }
-                                        Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                            Text("$${log["price"]}", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
-                                            Text("💬 WhatsApp ✅", fontSize = 9.sp, color = Color(0xFF38BDF8))
-                                        }
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
-        }
-
-
-            // 5. Quick Usage Guide Card
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF064E3B).copy(alpha = 0.3f)),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFF059669).copy(alpha = 0.4f)),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text("💡 تېلېگرامدىن قانداق يوللايسىز؟", fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Color(0xFF34D399))
-                    Text(
-                        "تېلېگرام قانال ياكى گۇرۇپپىڭىزغا رەسىم بىلەن تۆۋەندىكىدەك ھەرقانداق قېلىپتا يازسىڭىزلا سىستېما تولۇق چۈشىنىدۇ:",
-                        fontSize = 11.sp,
-                        color = Color(0xFFA7F3D0),
-                        lineHeight = 16.sp
-                    )
-                    Surface(
-                        shape = RoundedCornerShape(10.dp),
-                        color = Color(0xFF020617).copy(alpha = 0.8f),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                            Text("iPhone 16 Pro Max (512GB)", fontSize = 10.sp, color = Color(0xFFE2E8F0), fontWeight = FontWeight.Bold)
-                            Text("باھاسى: 8999 يۈەن", fontSize = 10.sp, color = Color(0xFF34D399), fontWeight = FontWeight.Bold)
-                            Text("رەڭگى قارا، پۈتۈنلەي يېڭى، كاپالەتلىك مەھسۇلات.", fontSize = 10.sp, color = Color(0xFF94A3B8))
-                        }
-                    }
-                }
+                    },
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

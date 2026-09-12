@@ -1,4 +1,4 @@
-﻿package com.example.ui.components
+package com.example.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -54,6 +54,8 @@ fun AIAssistantDialog(
         }
     }
 
+    val layoutDir = if (currentLanguage == AppLanguage.ENGLISH) androidx.compose.ui.unit.LayoutDirection.Ltr else androidx.compose.ui.unit.LayoutDirection.Rtl
+
     ModalBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -61,12 +63,15 @@ fun AIAssistantDialog(
         dragHandle = { BottomSheetDefaults.DragHandle() },
         modifier = Modifier.testTag("ai_assistant_dialog")
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.85f)
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+        androidx.compose.runtime.CompositionLocalProvider(
+            androidx.compose.ui.platform.LocalLayoutDirection provides layoutDir
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.85f)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
             // Header Bar
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -371,5 +376,6 @@ fun AIAssistantDialog(
             }
         }
     }
+}
 }
 

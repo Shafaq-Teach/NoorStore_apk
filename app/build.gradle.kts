@@ -14,17 +14,30 @@ android {
         applicationId = "com.aistudio.noorstore.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.0.3"
+        versionCode = 4
+        versionName = "1.0.4"
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("noorstore.jks")
+            storePassword = "noorstore123"
+            keyAlias = "noorstore"
+            keyPassword = "noorstore123"
+            enableV1Signing = true
+            enableV2Signing = true
+        }
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
+            signingConfig = signingConfigs.getByName("release")
             isDebuggable = true
         }
     }

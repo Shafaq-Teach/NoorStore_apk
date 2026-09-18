@@ -120,10 +120,24 @@ fun NoorStoreApp(
     var isUpdateDismissed by remember { mutableStateOf(false) }
     var isAboutDialogOpen by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        val info = com.example.data.remote.GitHubUpdateChecker.checkForUpdate(context)
-        if (info != null && info.isUpdateAvailable) {
-            updateInfoState = info
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val coroutineScope = rememberCoroutineScope()
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+                isUpdateDismissed = false
+                coroutineScope.launch {
+                    val info = com.example.data.remote.GitHubUpdateChecker.checkForUpdate(context)
+                    if (info != null && info.isUpdateAvailable) {
+                        updateInfoState = info
+                    }
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 

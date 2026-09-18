@@ -1,4 +1,4 @@
-﻿package com.example.data.remote
+package com.example.data.remote
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
+
+import java.io.File
+import androidx.core.content.FileProvider
 
 data class AppUpdateInfo(
     val latestVersionName: String,
@@ -23,8 +26,8 @@ object GitHubUpdateChecker {
     private const val DEFAULT_VERSION = "1.0.0"
 
     private val client = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
+        .connectTimeout(15, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
     suspend fun checkForUpdate(context: Context): AppUpdateInfo? = withContext(Dispatchers.IO) {
@@ -43,7 +46,7 @@ object GitHubUpdateChecker {
 
             val tagName = json.optString("tag_name", "")
             val title = json.optString("name", "Noor Store $tagName")
-            val notes = json.optString("body", "يېڭى نەشر چىقتى. تېز كۆرۈنمە يۈز ۋە كاشىلا تۈزىتىش ئېلىپ بېرىلدى.")
+            val notes = json.optString("body", "يېڭى نەشر چىقتى.")
 
             var apkUrl = "https://github.com/$GITHUB_REPO/releases/latest"
             val assets = json.optJSONArray("assets")
@@ -98,14 +101,82 @@ object GitHubUpdateChecker {
         return false
     }
 
-    fun downloadAndInstallApk(context: Context, downloadUrl: String) {
+    suspend fun downloadAndInstallApk(
+        context: Context,
+        downloadUrl: String,
+        onProgress: (Float) -> Unit,
+        onError: (String) -> Unit
+    ) = withContext(Dispatchers.IO) {
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl)).apply {
+            val request = Request.Builder()
+                .url(downloadUrl)
+                .header("User-Agent", "NoorStoreApp")
+                .build()
+
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                withContext(Dispatchers.Main) {
+                    onError("Download failed: HTTP ${response.code}")
+                }
+                return@withContext
+            }
+
+            val body = response.body ?: run {
+                withContext(Dispatchers.Main) { onError("چۈشۈرۈش مەغلۇپ بولدى") }
+                return@withContext
+            }
+
+            val contentLength = body.contentLength()
+            val outputFile = File(context.cacheDir, "NoorStore_update.apk")
+            if (outputFile.exists()) outputFile.delete()
+
+            body.byteStream().use { input ->
+                outputFile.outputStream().use { output ->
+                    val buffer = ByteArray(8192)
+                    var bytesCopied = 0L
+                    var read: Int
+                    while (input.read(buffer).also { read = it } != -1) {
+                        output.write(buffer, 0, read)
+                        bytesCopied += read
+                        if (contentLength > 0) {
+                            val progress = bytesCopied.toFloat() / contentLength.toFloat()
+                            withContext(Dispatchers.Main) {
+                                onProgress(progress)
+                            }
+                        }
+                    }
+                    output.flush()
+                }
+            }
+
+            withContext(Dispatchers.Main) {
+                onProgress(1.0f)
+                installApk(context, outputFile)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("GitHubUpdateChecker", "Download error: ${e.message}", e)
+            withContext(Dispatchers.Main) {
+                onError(e.localizedMessage ?: "چۈشۈرۈشتە خاتالىق كۆرۈلدى")
+            }
+        }
+    }
+
+    fun installApk(context: Context, apkFile: File) {
+        try {
+            val contentUri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                apkFile
+            )
+
+            val intent = Intent(Intent.ACTION_VIEW).apply {
+                setDataAndType(contentUri, "application/vnd.android.package-archive")
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
         } catch (e: Exception) {
-            android.util.Log.e("GitHubUpdateChecker", "Failed to launch download URL: ${e.message}")
+            android.util.Log.e("GitHubUpdateChecker", "Install launch failed: ${e.message}", e)
         }
     }
 }

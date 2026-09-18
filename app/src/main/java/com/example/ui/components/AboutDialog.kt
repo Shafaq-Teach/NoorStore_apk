@@ -26,7 +26,7 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun AboutDialog(
-    currentVersion: String = "1.0.3",
+    currentVersion: String = "1.0.4",
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current

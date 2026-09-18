@@ -1,4 +1,4 @@
-﻿package com.example
+package com.example
 
 import android.content.Intent
 import android.net.Uri
@@ -35,21 +35,21 @@ class WhatsAppTriggerActivity : ComponentActivity() {
                                 fun openWhatsApp(text: String) {
                                     try {
                                         val intent = Intent(Intent.ACTION_VIEW).apply {
-                                            data = Uri.parse(https://api.whatsapp.com/send?text= + Uri.encode(text))
-                                            setPackage(com.whatsapp)
+                                            data = Uri.parse("https://api.whatsapp.com/send?text=" + Uri.encode(text))
+                                            setPackage("com.whatsapp")
                                         }
                                         startActivity(intent)
                                     } catch (e: Exception) {
                                         try {
                                             val intent = Intent(Intent.ACTION_VIEW).apply {
-                                                data = Uri.parse(https://api.whatsapp.com/send?text= + Uri.encode(text))
+                                                data = Uri.parse("https://api.whatsapp.com/send?text=" + Uri.encode(text))
                                             }
                                             startActivity(intent)
                                         } catch (e2: Exception) {}
                                     }
                                 }
-                            }, AndroidApp)
-                            loadUrl(https://noor-store-bot.yulgun353.workers.dev/trigger)
+                            }, "AndroidApp")
+                            loadUrl("https://noor-store-bot.yulgun353.workers.dev/trigger")
                         }
                     },
                     modifier = Modifier.fillMaxSize()

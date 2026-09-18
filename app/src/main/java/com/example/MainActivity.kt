@@ -24,6 +24,7 @@ import com.example.ui.theme.NoorStoreTheme
 import com.example.ui.viewmodel.AdminViewModel
 import com.example.ui.viewmodel.Screen
 import com.example.ui.viewmodel.StoreViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private val storeViewModel: StoreViewModel by lazy {

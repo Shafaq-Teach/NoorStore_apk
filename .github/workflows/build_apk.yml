@@ -43,9 +43,9 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: v1.0.0
-          name: "Noor Store App v1.0.0"
-          body: "Noor Store App v1.0.0 Official Release (Supabase 24/7 Cloud Sync & Bug Fixes)."
+          tag_name: v1.0.1
+          name: "Noor Store App v1.0.1"
+          body: "Noor Store App v1.0.1 Official Release - ئەڭ يېڭى نۇسخا: تېز كۆرۈنمە يۈز، يۇقىرى سۈرئەتلىك ۋە كاشىلاسىز مۇقىم ئۇلىنىش."
           files: app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.RocketLaunch
-import androidx.compose.material.icons.filled.Sparkles
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.SystemUpdate
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -69,7 +68,7 @@ fun AppUpdateDialog(
                                 horizontalArrangement = Arrangement.spacedBy(10.dp)
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.RocketLaunch,
+                                    imageVector = Icons.Default.SystemUpdate,
                                     contentDescription = null,
                                     tint = Color.White,
                                     modifier = Modifier.size(28.dp)
@@ -124,7 +123,7 @@ fun AppUpdateDialog(
                                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                                 ) {
                                     Icon(
-                                        imageVector = Icons.Default.Sparkles,
+                                        imageVector = Icons.Default.Star,
                                         contentDescription = null,
                                         tint = Color(0xFF10B981),
                                         modifier = Modifier.size(16.dp)
@@ -186,7 +185,7 @@ fun AppUpdateDialog(
                             )
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Download,
+                                imageVector = Icons.Default.SystemUpdate,
                                 contentDescription = null,
                                 tint = Color.White
                             )

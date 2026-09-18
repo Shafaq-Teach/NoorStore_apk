@@ -1,4 +1,4 @@
-﻿package com.example.ui.components
+package com.example.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import androidx.compose.ui.window.Dialog
 
 @Composable
 fun AboutDialog(
-    currentVersion: String = "1.0.1",
+    currentVersion: String = "1.0.3",
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current

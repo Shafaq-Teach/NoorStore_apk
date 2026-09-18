@@ -41,13 +41,19 @@ jobs:
           name: NoorStore-APK
           path: app/build/outputs/apk/debug/*.apk
 
+      - name: Extract App Version
+        run: |
+          VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | head -n 1 | cut -d'"' -f2)
+          echo "APP_VERSION=$VERSION_NAME" >> $GITHUB_ENV
+
       - name: Create Release with APK
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/heads/main')
         with:
-          tag_name: v1.0.1
-          name: "Noor Store App v1.0.1"
-          body: "Noor Store App v1.0.1 Official Release - ئەڭ يېڭى نۇسخا: تېز كۆرۈنمە يۈز، يۇقىرى سۈرئەتلىك ۋە كاشىلاسىز مۇقىم ئۇلىنىش."
+          tag_name: v${{ env.APP_VERSION }}
+          name: "Noor Store App v${{ env.APP_VERSION }}"
+          body: "Noor Store App v${{ env.APP_VERSION }} Official Release - ئەڭ يېڭى نۇسخا: تاق تۈر ھالەتكە كەلتۈرۈلدى ۋە نەشىر كاشىلىلىرى تۈزىتىلدى."
           files: app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+

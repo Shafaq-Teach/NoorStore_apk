@@ -1,4 +1,4 @@
-﻿package com.example
+package com.example
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -115,6 +115,18 @@ fun NoorStoreApp(
     val adminCoupons by adminViewModel.coupons.collectAsStateWithLifecycle()
     val adminSyncStateJson by adminViewModel.syncStateJson.collectAsStateWithLifecycle()
 
+    // App Update & About Us Dialog States
+    var updateInfoState by remember { mutableStateOf<com.example.data.remote.AppUpdateInfo?>(null) }
+    var isUpdateDismissed by remember { mutableStateOf(false) }
+    var isAboutDialogOpen by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        val info = com.example.data.remote.GitHubUpdateChecker.checkForUpdate(context)
+        if (info != null && info.isUpdateAvailable) {
+            updateInfoState = info
+        }
+    }
+
     CompositionLocalProvider(LocalLayoutDirection provides currentLanguage.layoutDirection) {
         NoorStoreTheme(appTheme = currentTheme, darkTheme = isDarkMode) {
             Scaffold(
@@ -130,6 +142,7 @@ fun NoorStoreApp(
                         cartCount = cartCount,
                         onCartClick = { storeViewModel.navigateTo(Screen.CART) },
                         onAdminClick = { storeViewModel.navigateTo(Screen.ADMIN) },
+                        onAboutClick = { isAboutDialogOpen = true },
                         onMapClick = { storeViewModel.launchMapLocation(context) }
                     )
                 },
@@ -342,6 +355,31 @@ fun NoorStoreApp(
                                 storeViewModel.selectProduct(it)
                             },
                             onAddToCart = { storeViewModel.addToCart(it) }
+                        )
+                    }
+
+                    // In-App Auto-Update Dialog (Automated from GitHub Releases)
+                    updateInfoState?.let { info ->
+                        if (!isUpdateDismissed) {
+                            com.example.ui.components.AppUpdateDialog(
+                                updateInfo = info,
+                                onDismiss = { isUpdateDismissed = true }
+                            )
+                        }
+                    }
+
+                    // About Us Dialog
+                    if (isAboutDialogOpen) {
+                        val verName = remember(context) {
+                            try {
+                                context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: "1.0.1"
+                            } catch (e: Exception) {
+                                "1.0.1"
+                            }
+                        }
+                        com.example.ui.components.AboutDialog(
+                            currentVersion = verName,
+                            onDismiss = { isAboutDialogOpen = false }
                         )
                     }
                 }

@@ -37,6 +37,7 @@ fun HeaderBar(
     cartCount: Int,
     onCartClick: () -> Unit,
     onAdminClick: () -> Unit,
+    onAboutClick: () -> Unit = {},
     onMapClick: () -> Unit = {}
 ) {
     var langDropdownExpanded by remember { mutableStateOf(false) }
@@ -233,6 +234,22 @@ fun HeaderBar(
                         imageVector = Icons.Default.AdminPanelSettings,
                         contentDescription = "Admin",
                         tint = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+
+                // About Us Button
+                IconButton(
+                    onClick = onAboutClick,
+                    modifier = Modifier
+                        .size(34.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                        .testTag("about_icon_button")
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "About Us",
+                        tint = Color(0xFF0284C7),
                         modifier = Modifier.size(18.dp)
                     )
                 }
